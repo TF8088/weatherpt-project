@@ -6,3 +6,6 @@ const dataSource = require('../../../database/db')
 
 const UserSchema = require('../../../database/entity/userEntity');
 const postSensorTable = dataSource.getRepository(SensorSchema);
+
+// login
+// Register
