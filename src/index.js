@@ -26,7 +26,6 @@ app.use('/api/v1/sensor', sensorRoute);
 app.use('/api/v1/weather', weatherRoute);
 
 app.get("/", (req, res) => {
-
     const sensor = req.ip
     console.log(sensor);
     res.render("home");
@@ -37,6 +36,9 @@ app.get("/city", async (req, res) => {
     res.render("city",  { sensor: sensor });
 })
 
+app.get("/login", async (req, res) => {
+    res.render("login");
+})
 app.listen(PORT, () => {
     console.log(`Weatherpt API is running on: http://localhost:` + PORT);
 });
