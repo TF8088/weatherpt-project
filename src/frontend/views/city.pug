@@ -1,0 +1,24 @@
+extends default
+
+block content
+  p#sensor Sensor:
+  #city
+    .columns.is-multiline
+      .column.is-4
+        p.has-text-centered Temperature (°C): #{lastTempC}
+        .chart-container
+          canvas#tempcchart(style='width: 100%; max-height: 400px; margin: 0 auto;')
+
+      .column.is-4
+        p.has-text-centered Temperature (°F):
+        .chart-container
+          canvas#tempfchart(style='width: 100%; max-height: 400px; margin: 0 auto;')
+
+      .column.is-4
+        p.has-text-centered Humidity (%):
+        .chart-container
+          canvas#humiditychart(style='width: 100%; max-height: 400px; margin: 0 auto;')
+
+  script(src='./static/js/script.js' data-sensor=JSON.stringify(sensor))  
+  script(src='./static/js/vendor/momentjs.min.js')   
+  script(src='https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js')  

@@ -1,0 +1,57 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    title="WeatherPT"
+    link(rel="stylesheet", href="./static/css/style.css")
+    link(rel='stylesheet' href='./static/css/vendor/bulma-0.9.4.min.css')
+  body
+nav.navbar.has-navbar-fixed-top.has-shadow(
+  aria-label="main navigation" 
+  role="navigation"
+  )
+  .navbar-brand
+    a.navbar-item(href="/")
+      img(
+        height="28" 
+        width="112" 
+        src=""
+        )
+    a.navbar-burger(
+      data-target="navbarBasicExample" 
+      aria-expanded="false" 
+      aria-label="menu" 
+      role="button"
+      )
+      span(aria-hidden="true")
+      span(aria-hidden="true")
+      span(aria-hidden="true")
+  #navbarBasicExample.navbar-menu
+    .navbar-end
+      .navbar-start
+        a.navbar-item(href="/") Home
+        a.navbar-item(href="#") Documentation
+        .navbar-end
+          .navbar-item
+            .buttons
+              a.button(href="#") Sign up
+              a.button(href="#") Log in         
+
+block content
+
+footer.footer
+  .content.has-text-centered
+    p
+      strong WeathePT
+      |  by 
+      a(href='https://github.com/TF8088') Tiago F.
+      |  The source code is licensed
+      a(href='https://github.com/TF8088')  MIT
+
+script(src='./static/js/vendor/jquery-3.7.0.min.js')
+
+
+
+

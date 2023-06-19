@@ -1,0 +1,21 @@
+extends default
+
+block content       
+  section.hero.is-dark.is-fullheight#home
+    .hero-body
+      .container.has-text-centered
+        .columns.is-8.is-variable
+          .column.is-one-third.has-text-left
+            figure.image.is-128x128
+              img.is-rounded(
+                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwebstockreview.net%2Fimages%2Fkickball-clipart-kids-17.png&f=1&nofb=1&ipt=4848d088901d0bd0e70272c8f268770d7fb4f2af24b44506c7897b5e1fd8700f&ipo=images"
+              )
+            .box.weather-box
+              .control.weather-box
+                input#input-city.input.is-medium(
+                  placeholder="Type your City...." 
+                  type="text"
+                )
+              #cityselect.is-1
+  script(src='./static/js/script.js')
+  
