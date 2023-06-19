@@ -1,0 +1,24 @@
+extends default
+
+block content
+  section.section
+    .container
+      .container.is-flex.is-justify-content-center.is-align-items-center.is-fullheight
+        .column.is-half
+          .box
+            h1.title.has-text-centered Login
+            form(action="/login", method="POST")
+              .field
+                label.label Username/Email
+                .control
+                  input.input(type="text", name="username", placeholder="type your email")
+              .field
+                label.label Senha
+                .control
+                  input.input(type="password", name="password", placeholder="Type your password")
+              .field
+                .control
+                  button.button.is-primary(type="submit") Entrar
+
+  script(src='./static/js/vendor/momentjs.min.js')   
+  script(src='https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js')  
