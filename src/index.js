@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { userAuthenticate } = require('./shared/auth');
+const { serializeUser, deserializeUser, userAuthenticate } = require('./shared/auth');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, './frontend/views'));
@@ -41,8 +41,10 @@ app.use(session({
 const Strategy = new LocalStrategy(userAuthenticate);
 
 passport.use(Strategy);
-app.use(passport.initialize());
-app.use(passport.session());
+passport.serializeUser(serializeUser());
+passport.deserializeUser(deserializeUser());
+app.use(initialize());
+app.use(session());
 
 app.get("/", (req, res) => {
     res.render("home");
@@ -55,10 +57,10 @@ app.get("/login", async (req, res) => {
     res.render("login");
 })
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
-  function(req, res) {
-    res.redirect('/~' + req.user.username);
-  });
+  passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), 
+  (err, req, res, next) => {
+    if (err) next(err);  
+});
 app.listen(PORT, () => {
     console.log(`Weatherpt Project is running on: http://localhost:` + PORT);
 });

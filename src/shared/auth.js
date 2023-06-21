@@ -4,19 +4,19 @@ const LocalStrategy = require('passport-local').Strategy;
 const UserSchema = require('../database/entity/userEntity');
 const postUserTable = dataSource.getRepository(UserSchema);
 
-function userAuthenticate2(username, password, done) {
-  /* Alterar codigo Para o meu Projeto Fonte: Documenteção */
-  // postUserTable.findOne({ where: { username: username } }, function (err, user) {
-  //   console.log(user)
-  // })
-  console.log("Teste");
-  // User.findOne({ username: username }, function (err, user) {
-  //   if (err) { return done(err); }
-  //   if (!user) { return done(null, false); }
-  //   if (!user.verifyPassword(password)) { return done(null, false); }
-  //   return done(null, user);
-  // });
-}
+// function userAuthenticate2(username, password, done) {
+//   /* Alterar codigo Para o meu Projeto Fonte: Documenteção */
+//   // postUserTable.findOne({ where: { username: username } }, function (err, user) {
+//   //   console.log(user)
+//   // })
+//   console.log("Teste");
+//   // User.findOne({ username: username }, function (err, user) {
+//   //   if (err) { return done(err); }
+//   //   if (!user) { return done(null, false); }
+//   //   if (!user.verifyPassword(password)) { return done(null, false); }
+//   //   return done(null, user);
+//   // });
+// }
 var userAuthenticate = new LocalStrategy((username, password, done) => {
   try {
     console.log("Teste");
@@ -24,24 +24,6 @@ var userAuthenticate = new LocalStrategy((username, password, done) => {
     console.log("Err ", err)
   }
 });
-
-
-
-passport.use(new LocalStrategy(
-  function (username, password, done) {
-    /* Alterar codigo Para o meu Projeto Fonte: Documenteção */
-    // postUserTable.findOne({ where: { username: username } }, function (err, user) {
-    //   console.log(user)
-    // })
-    console.log("Teste");
-    // User.findOne({ username: username }, function (err, user) {
-    //   if (err) { return done(err); }
-    //   if (!user) { return done(null, false); }
-    //   if (!user.verifyPassword(password)) { return done(null, false); }
-    //   return done(null, user);
-    // });
-  }
-));
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -53,4 +35,4 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-module.exports = { userAuthenticate};
+module.exports = { serializeUser, deserializeUser, userAuthenticate};
