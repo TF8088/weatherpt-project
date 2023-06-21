@@ -1,7 +1,6 @@
 const express = require('express');
 const weatherRoute = express.Router();
 
-const { ILike } = require('typeorm');
 const dataSource = require('../../../database/db')
 
 const WeatherSchema = require('../../../database/entity/weatherEntity');
