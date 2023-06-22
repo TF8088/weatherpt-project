@@ -1,16 +1,20 @@
 if (window.location.pathname === '/') {
   let timer;
-  const waitTime = 1000;
-
+  const waitTime = 1500;
   const input = document.querySelector('#input-city');
-  input.addEventListener('keyup', (e) => {
+  input.addEventListener('input', (e) => {
     const city = e.currentTarget.value;
     clearTimeout(timer);
     timer = setTimeout(() => {
       homeChains(city);
     }, waitTime);
+    
+    if (city === '') {
+      const dropdownMenu = document.querySelector('#cityselect');
+      dropdownMenu.innerHTML = '';
+    } 
   });
-};
+}
 
 function homeChains(city) {
   $.ajax({
@@ -23,14 +27,24 @@ function homeChains(city) {
 
       dropdownMenu.innerHTML = '';
 
-      data.forEach((item) => {
-        const dropdownItem = document.createElement('a');
-        dropdownItem.classList.add('tag');
-        dropdownItem.classList.add('is-medium');
-        dropdownItem.href = `/city?sensor=` + item.id;
-        dropdownItem.textContent = item.cityName;
-        dropdownMenu.appendChild(dropdownItem);
-      });
+      if (data.length === 0) {
+        const noResultsItem = document.createElement('a');
+        noResultsItem.classList.add('tag');
+        noResultsItem.classList.add('is-medium');
+        noResultsItem.classList.add('results-item');
+        noResultsItem.textContent = 'No Results';
+        dropdownMenu.appendChild(noResultsItem);
+      } else {
+        data.forEach((item) => {
+          const dropdownItem = document.createElement('a');
+          dropdownItem.classList.add('tag');
+          dropdownItem.classList.add('is-medium');
+          dropdownItem.classList.add('results-item');
+          dropdownItem.href = `/city?sensor=` + item.id;
+          dropdownItem.textContent = item.cityName;
+          dropdownMenu.appendChild(dropdownItem);
+        });
+      }
     },
     error: (err) => {
       params.error(err);
@@ -41,7 +55,6 @@ function homeChains(city) {
 function updateChartInterval(sensor, interval) {
   // Chama a função weatherdata inicialmente
   weatherdata(sensor);
-  console.log("Hell");
   // Configura o intervalo de atualização do gráfico
   setInterval(() => {
     weatherdata(sensor);
@@ -68,6 +81,7 @@ function weatherdata(sensor) {
     type: 'GET',
     url: `/api/v1/weather/` + sensor,
     success: (data) => {
+      console.log(data);
       const tempcData = data.sensorData.map(entry => entry.tempc);
       const tempfData = data.sensorData.map(entry => entry.tempf);
       const humidityData = data.sensorData.map(entry => entry.humidity);
@@ -103,14 +117,20 @@ function weatherdata(sensor) {
           y: {
             beginAtZero: true
           }
-        }
-      };  
+        },
+        plugins: {
+          legend: {
+            display: false // Oculta a legenda
+          }
+        },
+        tension: 0.4 // Controla a suavidade das linhas do gráfico
+      };
       const tempcChartData = {
         labels: lastFiveDateData,
         datasets: [{
           label: 'TempC',
           data: lastFiveTempcData,
-          fill: false,
+          fill: true,
           borderColor: 'rgba(75, 192, 192, 1)',
           tension: 0.1
         }]
@@ -128,14 +148,20 @@ function weatherdata(sensor) {
           y: {
             beginAtZero: true
           }
-        }
-      };  
+        },
+        plugins: {
+          legend: {
+            display: false // Oculta a legenda
+          }
+        },
+        tension: 0.4 // Controla a suavidade das linhas do gráfico
+      };
       const tempfChartData = {
         labels: lastFiveDateData,
         datasets: [{
           label: 'TempF',
           data: lastFiveTempfData,
-          fill: false,
+          fill: true,
           borderColor: 'rgba(255, 99, 132, 1)',
           tension: 0.1
         }]
@@ -153,16 +179,22 @@ function weatherdata(sensor) {
           y: {
             beginAtZero: true
           }
-        }
-      };  
+        },
+        plugins: {
+          legend: {
+            display: false // Oculta a legenda
+          }
+        },
+        tension: 0.4 // Controla a suavidade das linhas do gráfico
+      };
       const humidityChartData = {
         labels: lastFiveDateData,
         datasets: [{
           label: 'Humidity',
           data: lastFiveHumidityData,
-          fill: false,
+          fill: true,
           borderColor: 'rgba(54, 162, 235, 1)',
-          tension: 0.1
+          tension: 0.1  
         }]
       };
       const humidityCtx = document.getElementById('humiditychart').getContext('2d');
