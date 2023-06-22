@@ -1,28 +1,107 @@
-.hero-body {
-    background: rgba(255, 255, 255, 0.2);
-    background-image: url('https://wallpapercave.com/wp/wp2028752.jpg');
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+body {
+    overflow-x: hidden;
 }
+
+
+footer {
+    border-top: 1px solid rgb(204, 204, 204);
+}
+
+.footer-list {
+    margin-top: 10px;
+}
+
+.footer-list li {
+    margin-top: 10px;
+}
+
+.footer-list li:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    /* Styles for mobile devices */
+    .columns {
+        flex-direction: column;
+    }
+    .column.is-1 {
+        display: none;
+    }
+    .column.is-two-thirds {
+        margin-top: 1rem;
+        /* Add spacing between the text and the vertical line */
+    }
+}
+
+@media (min-width: 769px) {
+    /* Styles for desktop devices */
+    .vertical-line {
+        width: 1px;
+        height: 100%;
+        background-color: #ccc;
+        margin: 0 auto;
+    }
+}
+
+.hero-body {
+    background: rgba(255, 255, 255, 0.27);
+    background-image: url('https://wallpapercave.com/wp/wp2028752.jpg');
+    background-size: cover;
+    background-position: 100%;
+}
+
+.results-item {
+    margin: 1rem 1rem 0 auto;
+}
+
+.results-item:hover {
+    border: 1px solid rgb(50, 115, 220);
+}
+
+.city-navbar {
+    border-top: 1px solid rgb(204, 204, 204);
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.column-style {
+    border-right: 1px solid rgb(204, 204, 204);
+}
+
 .chart-container {
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
     position: relative;
     width: 100%;
 }
+
+.chart-title {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.27);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 .chart-container::before {
     content: "";
     display: block;
     padding-top: 100%;
 }
-  canvas {
+
+canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 }
-  
+
+@media screen and (max-width: 768px) {
+    .column.is-4 {
+      flex: 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .columns.is-multiline .column.is-4 {
+      flex: 100%;
+      max-width: 100%;
+    }
+}

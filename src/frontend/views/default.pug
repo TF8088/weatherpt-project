@@ -5,8 +5,10 @@ html
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     meta(http-equiv='X-UA-Compatible' content='ie=edge')
     title="WeatherPT"
+    link(rel="shortcut icon", href="./static/imgs/kickball-clipart-kids-17-3222846518.pngx", type="image/x-icon")
     link(rel="stylesheet", href="./static/css/style.css")
     link(rel='stylesheet' href='./static/css/vendor/bulma-0.9.4.min.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
   body
 nav.navbar.has-navbar-fixed-top.has-shadow(
   aria-label="main navigation" 
@@ -31,8 +33,7 @@ nav.navbar.has-navbar-fixed-top.has-shadow(
   #navbarBasicExample.navbar-menu
     .navbar-end
       .navbar-start
-        a.navbar-item(href="/") Home
-        a.navbar-item(href="#") Documentation
+        a.navbar-item(href="https://github.com/TF8088/weatherpt-project" target='_blank') Documentation
         .navbar-end
           .navbar-item
             .buttons
@@ -42,13 +43,36 @@ nav.navbar.has-navbar-fixed-top.has-shadow(
 block content
 
 footer.footer
-  .content.has-text-centered
-    p
-      strong WeathePT
-      |  by 
-      a(href='https://github.com/TF8088') Tiago F.
-      |  The source code is licensed
-      a(href='https://github.com/TF8088')  MIT
+  .container
+    .columns
+      .column.is-one-third
+        p
+          strong WeatherPT Links
+        ul.footer-list
+          li.is-flex.is-align-items-center
+            a(href='#' target='_blank')
+              i.far.fa-file-alt
+              span.ml-2 API Docs
+          li.is-flex.is-align-items-center
+            a(href='https://www.esgc.pt/' target='_blank')
+              i.fas.fa-graduation-cap
+              span.ml-2 Escola Secund&aacute;ria Gago Coutinho
+          li.is-flex.is-align-items-center
+            a(href='https://github.com/TF8088/weatherpt-project' target='_blank')
+              i.fab.fa-github
+              span.ml-2 WeatherPT GitHub
+          li.is-flex.is-align-items-center
+            a(href='https://github.com/TF8088' target='_blank')
+              i.fab.fa-github
+              span.ml-2 Tiago Farinha Github
+      .column.is-1
+        hr.vertical-line 
+      .column.is-two-thirds
+          p
+            strong WeatherPT About 
+          .footer-list
+          p WeatherPT project developed as part of a professional aptitude test with the goal
+          p of creating a unique and reliable system for collecting and processing meteorological data, and subsequently displaying it through a WebApp.
 
 script(src='./static/js/vendor/jquery-3.7.0.min.js')
 
