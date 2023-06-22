@@ -1,23 +1,37 @@
 extends default
 
 block content
-  p#sensor Sensor:
-  #city
-    .columns.is-multiline
-      .column.is-4
-        p.has-text-centered Temperature (°C):
-        .chart-container
-          canvas#tempcchart(style='width: 100%; max-height: 400px; margin: 0 auto;')
+  .navbar.city-navbar
+    .container
+      .navbar-brand
+        span.navbar-item City:  
+        span 
 
-      .column.is-4
-        p.has-text-centered Temperature (°F):
-        .chart-container
-          canvas#tempfchart(style='width: 100%; max-height: 400px; margin: 0 auto;')
 
-      .column.is-4
-        p.has-text-centered Humidity (%):
-        .chart-container
-          canvas#humiditychart(style='width: 100%; max-height: 400px; margin: 0 auto;')
+  #city.columns.is-multiline
+    .column.is-4.column-style
+      .chart-title.has-text-centered
+        p.has-text-centered Temperature (
+         strong &deg;C
+         | ):
+      .chart-container
+        canvas#tempcchart
+    .column.is-4.column-style
+      .chart-title
+        p.has-text-centered TTemperature (
+         strong &deg;F
+         | ):
+      .chart-container
+        canvas#tempfchart
+    .column.is-4.column-style
+      .chart-title
+        p.has-text-centered Humidity (
+         strong %
+         | ):
+      .chart-container
+        canvas#humiditychart
+
+
 
   script(src='./static/js/script.js' data-sensor=JSON.stringify(sensor))  
   script(src='./static/js/vendor/momentjs.min.js')   
