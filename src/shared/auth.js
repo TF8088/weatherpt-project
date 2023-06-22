@@ -17,22 +17,35 @@ const postUserTable = dataSource.getRepository(UserSchema);
 //   //   return done(null, user);
 //   // });
 // }
-var userAuthenticate = new LocalStrategy((username, password, done) => {
+var userAuthenticate = new LocalStrategy(async (username, password, done) => {
   try {
-    console.log("Teste");
+    const user = await postUserTable.findOne({ where: { username: username } });
+    if (!user) {
+      return done(null, false);
+    }
+    // Implemente a lógica de verificação da senha aqui
+    // Comparando a senha do usuário com a senha fornecida no callback
+
+    if (password !== user.password) {
+      return done(null, false, { message: 'Senha incorreta' });
+    }
+
+    return done(null, user);
   } catch (err) {
-    console.log("Err ", err)
+    console.log('Erro:', err);
+    return done(err);
   }
 });
 
-passport.serializeUser(function (user, done) {
+
+const serializeUser = (function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
+const deserializeUser = (function (id, done) {
   User.findById(id, function (err, user) {
     done(err, user);
   });
 });
 
-module.exports = { serializeUser, deserializeUser, userAuthenticate};
+module.exports = { serializeUser, deserializeUser, userAuthenticate };
