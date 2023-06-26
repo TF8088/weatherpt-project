@@ -1,10 +1,14 @@
+:root {
+    --primary-color: #337ab7;
+    --secondary-color: #ccc;
+}
+
 body {
     overflow-x: hidden;
 }
 
-
 footer {
-    border-top: 1px solid rgb(204, 204, 204);
+    border-top: 1px solid var(--secondary-color);
 }
 
 .footer-list {
@@ -20,25 +24,24 @@ footer {
 }
 
 @media (max-width: 768px) {
-    /* Styles for mobile devices */
     .columns {
         flex-direction: column;
     }
+
     .column.is-1 {
         display: none;
     }
+
     .column.is-two-thirds {
         margin-top: 1rem;
-        /* Add spacing between the text and the vertical line */
     }
 }
 
 @media (min-width: 769px) {
-    /* Styles for desktop devices */
     .vertical-line {
         width: 1px;
         height: 100%;
-        background-color: #ccc;
+        background-color: var(--secondary-color);
         margin: 0 auto;
     }
 }
@@ -55,16 +58,16 @@ footer {
 }
 
 .results-item:hover {
-    border: 1px solid rgb(50, 115, 220);
+    border: 1px solid var(--primary-color);
 }
 
 .city-navbar {
-    border-top: 1px solid rgb(204, 204, 204);
-    border-bottom: 1px solid rgb(204, 204, 204);
+    border-top: 1px solid var(--secondary-color);
+    border-bottom: 1px solid var(--secondary-color);
 }
 
 .column-style {
-    border-right: 1px solid rgb(204, 204, 204);
+    border-right: 1px solid var(--secondary-color);
 }
 
 .chart-container {
@@ -73,9 +76,9 @@ footer {
 }
 
 .chart-title {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.27);
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.27);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .chart-container::before {
@@ -94,14 +97,85 @@ canvas {
 
 @media screen and (max-width: 768px) {
     .column.is-4 {
-      flex: 100%;
-      max-width: 100%;
+        flex: 100%;
+        max-width: 100%;
     }
-  }
+}
 
-  @media screen and (max-width: 576px) {
+@media screen and (max-width: 576px) {
     .columns.is-multiline .column.is-4 {
-      flex: 100%;
-      max-width: 100%;
+        flex: 100%;
+        max-width: 100%;
+    }
+}
+
+.navbar.city-navbar {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.navbar-brand a {
+    margin-right: 15px;
+}
+
+.navbar-brand i {
+    margin-right: 10px;
+}
+
+.navbar.controllers {
+    display: flex;
+    justify-content: flex-end;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+  
+.container-controllers {
+    display: flex;
+    align-items: flex-end;
+}
+  
+  
+
+.table-container {
+    position: relative;
+    top: 20px;
+    left: 20px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Estilos para a tabela */
+.container-table {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100vh;
+    padding-left: 20px;
+}
+
+table {
+    width: 100%;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+}
+
+.delete-button {
+    margin-bottom: 10px;
+    
+}
+
+@media (max-width: 600px) {
+    .container {
+        justify-content: center;
+        padding-top:0;
     }
 }
