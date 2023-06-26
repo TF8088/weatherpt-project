@@ -8,11 +8,11 @@ if (window.location.pathname === '/') {
     timer = setTimeout(() => {
       homeChains(city);
     }, waitTime);
-    
+
     if (city === '') {
       const dropdownMenu = document.querySelector('#cityselect');
       dropdownMenu.innerHTML = '';
-    } 
+    }
   });
 }
 
@@ -194,7 +194,7 @@ function weatherdata(sensor) {
           data: lastFiveHumidityData,
           fill: true,
           borderColor: 'rgba(54, 162, 235, 1)',
-          tension: 0.1  
+          tension: 0.1
         }]
       };
       const humidityCtx = document.getElementById('humiditychart').getContext('2d');
@@ -209,6 +209,84 @@ function weatherdata(sensor) {
     }
   });
 }
+
+if (window.location.pathname === '/dashboard/sensor') {
+  // Função para criar a tabela com os dados dos sensores
+  function createSensorTable(data) {
+    const tableBody = document.getElementById('sensorTableBody');
+    tableBody.innerHTML = '';
+
+    data.forEach((sensor) => {
+      const row = document.createElement('tr');
+
+      const nameCell = document.createElement('td');
+      nameCell.textContent = sensor.name;
+      row.appendChild(nameCell);
+
+      const ipCell = document.createElement('td');
+      ipCell.textContent = sensor.ip;
+      row.appendChild(ipCell);
+
+      const cityCell = document.createElement('td');
+      cityCell.textContent = sensor.cityName;
+      row.appendChild(cityCell);
+
+      const actionsCell = document.createElement('td');
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('button');
+      deleteButton.classList.add('is-danger');
+      deleteButton.textContent = 'Delete';
+      deleteButton.classList.add('delete-button');
+      deleteButton.addEventListener('click', () => {
+        // Lógica para ação de edição do sensor
+        console.log('Editing sensor:', sensor.id);
+      });
+      actionsCell.appendChild(deleteButton);
+      row.appendChild(actionsCell);
+
+      tableBody.appendChild(row);
+    });
+  }
+  // Função para fazer a requisição AJAX
+  function fetchSensorData() {
+    // Faz a requisição para a rota /api/v1/sensor/
+    fetch('/api/v1/sensor/')
+      .then((response) => response.json())
+      .then((data) => {
+        // Chama a função para criar a tabela com os dados recebidos
+        createSensorTable(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  // Função para buscar os dados dos sensores e configurar a chamada repetida a cada 5 minutos
+  function fetchSensorDataRepeatedly() {
+    // Chama a função imediatamente
+    fetchSensorData();
+    // Chama a função a cada 5 minutos
+    setInterval(fetchSensorData, 5 * 60 * 1000);
+  }
+  // Chama a função para buscar os dados dos sensores e configurar a chamada repetida
+  fetchSensorDataRepeatedly();
+}
+
+function openModal() {
+  const modal = document.getElementById('sensorModal');
+  modal.classList.add('is-active');
+}
+
+function closeModal() {
+  const modal = document.getElementById('sensorModal');
+  modal.classList.remove('is-active');
+}
+
+document.addEventListener('keydown', (event) => {
+  const e = event || window.event;
+  if (e.keyCode === 27) { // Escape key
+    closeModal();
+  }
+});
 
 /* Menu util */
 document.addEventListener('DOMContentLoaded', () => {
