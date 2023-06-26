@@ -10,7 +10,7 @@ const dataSource = new DataSource({
   port: 5432,
   username: 'postgres',
   password: 'weatherpt',
-  database: '',
+  database: 'weatherpt',
   synchronize: true,
   entities: [ WeatherSchema, UserSchema, SensorSchema, CitySchema ],
 });
