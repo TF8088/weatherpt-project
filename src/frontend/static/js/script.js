@@ -19,7 +19,7 @@ if (window.location.pathname === '/') {
 function homeChains(city) {
   $.ajax({
     type: 'GET',
-    url: `/api/v1/sensor/?city=${city}`,
+    url: `/api/v1/sensor/search/${city}`,
     success: (data) => {
       console.log(data)
 
@@ -279,6 +279,56 @@ function openModal() {
 function closeModal() {
   const modal = document.getElementById('sensorModal');
   modal.classList.remove('is-active');
+}
+
+function saveSensor() {
+  const name = document.getElementById('sensorName').value;
+  const ip = document.getElementById('sensorIP').value;
+  const cityName = document.getElementById('cityName').value;
+  
+  console.log(cityName);
+
+  // Validar os dados
+  const ipPattern = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+  if (!ipPattern.test(ip)) {
+    // Exibir notificação de erro
+    const errorNotification = document.getElementById('errorNotification');
+    errorNotification.classList.remove('is-hidden');
+   
+    setTimeout(() => {
+      errorNotification.classList.add('is-hidden');
+    }, 5000);
+
+    return;
+  }
+
+  // Ocultar notificação de erro se estiver sendo exibida
+  const errorNotification = document.getElementById('errorNotification');
+  errorNotification.classList.add('is-hidden');
+
+  // Criar objeto com os dados do sensor
+  const sensorData = {
+    name,
+    ip,
+    cityName
+  };
+
+  // Fazer a requisição AJAX
+  fetch('/api/v1/sensor/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(sensorData)
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Sensor saved:', data);
+      // Lógica adicional após salvar o sensor
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+    });
 }
 
 document.addEventListener('keydown', (event) => {
