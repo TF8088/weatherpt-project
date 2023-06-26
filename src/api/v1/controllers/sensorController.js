@@ -2,9 +2,13 @@ const express = require('express');
 const sensorRoute = express.Router();
 
 const dataSource = require('../../../database/db')
+const { ILike } = require('typeorm');
 
 const SensorSchema = require('../../../database/entity/sensorEntity');
 const postSensorTable = dataSource.getRepository(SensorSchema);
+
+const CitySchema = require('../../../database/entity/citysEntity');
+const postCityTable = dataSource.getRepository(CitySchema);
 
 // Pesquisa de Todos os sensores mais cidade 
 sensorRoute.get('/', async (req, res) => {
@@ -55,9 +59,9 @@ sensorRoute.get('/:id', async (req, res) => {
 });
 
 // Busca sensores por cidade
-sensorRoute.get('/search', async (req, res) => {
+sensorRoute.get('/search/:city', async (req, res) => {
   try {
-    const city = req.query.city;
+    const city = req.params.city;
     console.log('New Request' + req.ip);
     // Busca de sensores por cidade
     if (!city) {
@@ -70,6 +74,7 @@ sensorRoute.get('/search', async (req, res) => {
       .where('city.name ILike :cityName', { cityName: `%${city}%` })
       .getMany();
 
+    console.log(city)
     const transformedResponse = cities.map((item) => {
       return {
         id: item.id,
@@ -87,8 +92,51 @@ sensorRoute.get('/search', async (req, res) => {
 
 // Adiciona um sensor
 sensorRoute.post('/', async (req, res) => {
-  // Lógica para adicionar um sensor
+  try {
+    const { name, ip, cityName } = req.body;
+
+    // Verificar se a cidade já existe
+    const existingCity = await postCityTable.findOne({
+      where: {
+        name: cityName
+      }
+    });
+
+    console.log(existingCity);
+
+    if (!existingCity) {
+      // Criar uma nova cidade
+      const newCity = postCityTable.create({
+        name: cityName
+      });
+      // Salvar a nova cidade 
+      const savedCity = await postCityTable.save(newCity);
+      const cityId = savedCity.id;
+
+      // Criar um novo sensor relacionado à cidade
+      const newSensor = postSensorTable.create({ name, ip, cityId });
+      // Salvar o novo sensor 
+      const savedSensor = await postSensorTable.save(newSensor);
+
+      console.log('Sensor and City saved:', savedSensor, savedCity);
+    } else {
+      const cityId = existingCity.id;
+
+      // Criar um novo sensor relacionado à cidade existente
+      const newSensor = postSensorTable.create({ name, ip, cityId });
+      // Salvar o novo sensor 
+      const savedSensor = await postSensorTable.save(newSensor);
+
+      console.log('Sensor saved:', savedSensor);
+    }
+
+    res.send({ message: 'Sensor saved successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ message: 'Bad Request' });
+  }
 });
+
 
 // Deleta um sensor
 sensorRoute.delete('/:id', async (req, res) => {
