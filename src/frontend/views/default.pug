@@ -10,7 +10,7 @@ html
     link(rel='stylesheet' href='./static/css/vendor/bulma-0.9.4.min.css')
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
   body
-nav.navbar.has-navbar-fixed-top.has-shadow(
+nav.navbar.is-fixed-top.has-shadow(
   aria-label="main navigation" 
   role="navigation"
   )
@@ -38,8 +38,7 @@ nav.navbar.has-navbar-fixed-top.has-shadow(
           .navbar-item
             .buttons
               a.button(href="#") Sign up
-              a.button(href="/login") Log in         
-
+              a.button(href="/login") Log in
 block content
 
 footer.footer

@@ -1,0 +1,47 @@
+extends default
+
+block content
+ .navbar.controllers
+  .container-controllers
+    .navbar-brand
+      button.button.m-3.is-success(onclick='openModal()') Add Sensor 
+
+ #sensorModal.modal.modal-background
+  .modal-card
+    header.modal-card-head
+      p.modal-card-title Add New Sensor
+      button.delete(onclick='closeModal()')
+    section.modal-card-body
+      form
+        .field
+          label.label Nome do Sensor
+          .control
+            input.input(type='text' placeholder='Nome do Sensor')
+
+        .field
+          label.label IP do Sensor
+          .control
+            input.input(type='text' placeholder='IP do Sensor' name='sensorIP' pattern='#{/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/}')
+
+        .field
+          label.label Cidade
+          .control
+            .select.is-primary
+              select
+    footer.modal-card-foot
+      button.button.is-success(type='submit') Save changes
+      button.button(onclick='closeModal()') Cancel
+
+
+
+ .container-table
+      table
+        thead
+          tr
+            th Name
+            th IP
+            th City
+            th Delete
+        tbody#sensorTableBody
+
+ script(src='../static/js/script.js')
