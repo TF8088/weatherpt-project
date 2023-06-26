@@ -14,6 +14,10 @@ nav.navbar.has-navbar-fixed-top.has-shadow
   .navbar-brand
     a.navbar-item(href="/dashboard")
       img(height="28", width="112", src="../static/imgs/weatherpt-removebg-preview.png")
+  .navbar-end
+    .navbar-item
+      form(action='/logout' method='POST')
+        button.button(type='submit') Log Out
 .navbar.city-navbar
   .container
     .navbar-brand
