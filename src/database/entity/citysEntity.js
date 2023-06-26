@@ -6,8 +6,6 @@ const CitySchema = new EntitySchema({
     columns: {
         id: { primary: true, type: 'uuid', generated: 'uuid' },
         name: { type: 'varchar' },
-        lat: { type: 'numeric' },
-        long: { type: 'numeric' }
     },
 });
 
