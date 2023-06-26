@@ -13,10 +13,14 @@ const PORT = process.env.PORT || 3001;
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { userAuthenticate, deserializeUser, serializeUser  } = require('./shared/auth');
+const { authenticateUser, deserializeUser, serializeUser  } = require('./shared/auth');
 
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, './frontend/views'));
+app.set('views', [
+    path.join(__dirname, './frontend/views'),
+    path.join(__dirname, './frontend/views/admin')
+]);
+
 app.use('/static', express.static(path.join(__dirname, './frontend/static')))
 
 app.use(logsMiddleware);
@@ -33,24 +37,26 @@ app.use('/', websiteRoute);
 
 /* Website */
 
-// app.use(session({
-//     secret: 'weatherpt-test',
-//     resave: true,
-//     saveUninitialized: true
-// }))
+app.use(session({
+    secret: 'weatherpt-test',
+    resave: true,
+    saveUninitialized: true
+}))
 
-// const Strategy = new LocalStrategy(userAuthenticate);z
-// passport.use(Strategy);
-// app.use(passport.initialize());
-// app.use(passport.session());
-// passport.serializeUser(myserialize());
-// passport.deserializeUser(mydeseriSalize());
+app.use(passport.initialize());
+app.use(passport.session());
 
-// app.post('/login',
-//   passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), 
-//   (err, req, res, next) => {
-//     if (err) next(err);  
-// });
+const Strategy = new LocalStrategy({ usernameField: 'username' }, authenticateUser);
+passport.use(Strategy);
+passport.serializeUser(serializeUser);
+passport.deserializeUser(deserializeUser);
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), 
+(err, next) => {
+    console.log("/loginPOST"); 
+    if (err) next(err);  
+});
+
 
 app.listen(PORT, () => {
     console.log(`Weatherpt Project is running on: http://localhost:` + PORT);
