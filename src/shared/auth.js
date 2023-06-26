@@ -1,19 +1,17 @@
-const passport = require('passport');
 const dataSource = require('../database/db');
-const LocalStrategy = require('passport-local').Strategy;
 const UserSchema = require('../database/entity/userEntity');
 const postUserTable = dataSource.getRepository(UserSchema);
 
 const authenticateUser = async (email, password, done) => {
-  console.log("authenticateUser")
   try {
     const user = await postUserTable.findOne({ where: { email: email } });
-    console.log(JSON.stringify(user, null, 2));
+    // console.log(JSON.stringify(user, null, 2));
     if (!user) {
-      console.log("inside not user"); 
       return done(null, false);
     }
+    // PASS WORD ECRYPT TODO
     if (password !== user.password) {
+      console.log("err pass word false")
       return done(null, false, { message: 'Senha incorreta' });
     }
     return done(null, user);
@@ -23,16 +21,17 @@ const authenticateUser = async (email, password, done) => {
   }
 };
 
-const serializeUser = async (user, done) => {
-  console.log(user);
+const serializeUser =  (user, done) => {
   return done(null, user);
 };
 
-const deserializeUser = async (id, done) => {
-  console.log("deserializeUser"); 
-  User.findById(id, function (err, user) {
-    return done(err, user);
-  });
+const deserializeUser = async (user, done) => {
+  try {
+    const userData = await postUserTable.findOne({where : { id : user.id }});
+    return done(null, userData);
+  } catch (err) {
+    return done(err);
+  }
 }
 
 module.exports = { serializeUser, deserializeUser, authenticateUser };

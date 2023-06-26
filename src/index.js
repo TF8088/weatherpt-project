@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const sensorRoute = require("./api/v1/controllers/sensorController");
 const weatherRoute = require("./api/v1/controllers/weatherController");
 const websiteRoute = require("./frontend/index")
@@ -15,6 +14,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { authenticateUser, deserializeUser, serializeUser  } = require('./shared/auth');
 
+app.use(express.urlencoded({ extended: false }))
 app.set('view engine', 'pug');
 app.set('views', [
     path.join(__dirname, './frontend/views'),
@@ -24,18 +24,9 @@ app.set('views', [
 app.use('/static', express.static(path.join(__dirname, './frontend/static')))
 
 app.use(logsMiddleware);
-app.use(bodyParser.json());
-app.use(express.json());
 app.use(cors({
     origin: ['192.168.1.155', '192.168.0.110']
 }));
-
-
-app.use('/api/v1/sensor', sensorRoute);
-app.use('/api/v1/weather', weatherRoute);
-app.use('/', websiteRoute);
-
-/* Website */
 
 app.use(session({
     secret: 'weatherpt-test',
@@ -46,17 +37,25 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const Strategy = new LocalStrategy({ usernameField: 'username' }, authenticateUser);
-passport.use(Strategy);
+passport.use(new LocalStrategy(authenticateUser));
 passport.serializeUser(serializeUser);
 passport.deserializeUser(deserializeUser);
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), 
-(err, next) => {
-    console.log("/loginPOST"); 
-    if (err) next(err);  
-});
+app.use('/api/v1/sensor', sensorRoute);
+app.use('/api/v1/weather', weatherRoute);
+app.use('/', websiteRoute);
 
+app.post("/login", passport.authenticate('local', {
+    successRedirect: "/dashboard",
+    failureRedirect: "/login"
+}))
+
+app.post('/logout', function(req, res, next){
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Weatherpt Project is running on: http://localhost:` + PORT);
