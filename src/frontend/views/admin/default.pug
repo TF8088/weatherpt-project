@@ -9,15 +9,22 @@ html
     link(rel="stylesheet", href="../static/css/style.css")
     link(rel='stylesheet' href='../static/css/vendor/bulma-0.9.4.min.css')
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
+    script(src='../static/js/vendor/jquery-3.7.0.min.js')
   body
 nav.navbar.has-navbar-fixed-top.has-shadow
   .navbar-brand
-    a.navbar-item(href="/dashboard")
-      img(height="28", width="112", src="../static/imgs/weatherpt-removebg-preview.png")
-  .navbar-end
-    .navbar-item
-      form(action='/logout' method='POST')
-        button.button(type='submit') Log Out
+    a.navbar-item(href='/dashboard')
+      img(src='../static/imgs/weatherpt-removebg-preview.png' height='28' width='112')
+    a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false' data-target='navbarMenu')
+      span(aria-hidden='true')
+      span(aria-hidden='true')
+      span(aria-hidden='true')
+  #navbarMenu.navbar-menu
+    .navbar-end
+      .navbar-item
+        form(action='/logout' method='POST')
+          button.button(type='submit') Log Out
+
 .navbar.city-navbar
   .container
     .navbar-brand
@@ -38,7 +45,7 @@ footer.footer
       |  The source code is licensed
       a(href='https://github.com/TF8088')  MIT
 
-script(src='./static/js/vendor/jquery-3.7.0.min.js')
+
 
 
 

@@ -1,31 +1,31 @@
 extends default
 
 block content
-  .navbar.city-navbar
-    .container
-      .navbar-brand
-        span.navbar-item City:  
-        span 
+  //- .navbar.city-navbar
+  //-   .container
+  //-     .navbar-brand
+  //-       span.navbar-item City:  
+  //-       span 
 
   #city.columns.is-multiline
     .column.is-4.column-style
-      .chart-title.has-text-centered
+      .chart-title.has-text-centered.mt-6
         p.has-text-centered Temperature (
-         strong &deg;C
+         | &deg;C
          | ):
       .chart-container
         canvas#tempcchart
     .column.is-4.column-style
-      .chart-title
-        p.has-text-centered TTemperature (
-         strong &deg;F
+      .chart-title.has-text-centered.mt-6
+        p.has-text-centered Temperature (
+         | &deg;F
          | ):
       .chart-container
         canvas#tempfchart
     .column.is-4.column-style
-      .chart-title
+      .chart-title.has-text-centered.mt-6
         p.has-text-centered Humidity (
-         strong %
+         | %
          | ):
       .chart-container
         canvas#humiditychart
