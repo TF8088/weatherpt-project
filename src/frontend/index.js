@@ -2,7 +2,6 @@ const express = require('express');
 
 const websiteRoute = express.Router();
 
-
 chechAuthenticated = (req, res, next) => {
     if (req && req.isAuthenticated()) {
         return next()
