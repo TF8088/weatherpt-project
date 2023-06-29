@@ -10,11 +10,19 @@ const postSensorTable = dataSource.getRepository(SensorSchema);
 const CitySchema = require('../../../database/entity/citysEntity');
 const postCityTable = dataSource.getRepository(CitySchema);
 
+chechAuthenticated = (req, res, next) => {
+  if (req && req.isAuthenticated()) {
+      return next()
+  } 
+  res.redirect("/")
+}
+
 // Pesquisa de Todos os sensores mais cidade 
 sensorRoute.get('/', async (req, res) => {
   try {
     const sensors = await postSensorTable.createQueryBuilder('sensor')
       .leftJoinAndSelect('sensor.sensor_city', 'city')
+      .orderBy('sensor.status', 'DESC') 
       .getMany();
 
     const transformedResponse = sensors.map((sensor) => {
@@ -22,7 +30,8 @@ sensorRoute.get('/', async (req, res) => {
         id: sensor.id,
         name: sensor.name,
         ip: sensor.ip,
-        cityName: sensor.sensor_city.name
+        cityName: sensor.sensor_city.name,
+        status: sensor.status
       };
     });
 
@@ -46,12 +55,11 @@ sensorRoute.get('/:id', async (req, res) => {
     const sensorData = await postSensorTable.findOne({
       where: {
         id: sensorId
-      }
+      },
+      relations: ['sensor_city'] // Incluir a relação "sensor_city"
     });
     // Resposta ao pedido
-    res.send({
-      sensorData
-    });
+    res.send(sensorData);
   } catch (err) {
     console.log(err);
     res.status(400).send({ message: 'Bad Request' });
@@ -73,8 +81,6 @@ sensorRoute.get('/search/:city', async (req, res) => {
       .leftJoinAndSelect('sensor.sensor_city', 'city')
       .where('city.name ILike :cityName', { cityName: `%${city}%` })
       .getMany();
-
-    console.log(city)
     const transformedResponse = cities.map((item) => {
       return {
         id: item.id,
@@ -91,19 +97,15 @@ sensorRoute.get('/search/:city', async (req, res) => {
 });
 
 // Adiciona um sensor
-sensorRoute.post('/', async (req, res) => {
+sensorRoute.post('/', chechAuthenticated, async (req, res) => {
   try {
     const { name, ip, cityName } = req.body;
-
     // Verificar se a cidade já existe
     const existingCity = await postCityTable.findOne({
       where: {
         name: cityName
       }
     });
-
-    console.log(existingCity);
-
     if (!existingCity) {
       // Criar uma nova cidade
       const newCity = postCityTable.create({
@@ -112,24 +114,17 @@ sensorRoute.post('/', async (req, res) => {
       // Salvar a nova cidade 
       const savedCity = await postCityTable.save(newCity);
       const cityId = savedCity.id;
-
       // Criar um novo sensor relacionado à cidade
       const newSensor = postSensorTable.create({ name, ip, cityId });
       // Salvar o novo sensor 
       const savedSensor = await postSensorTable.save(newSensor);
-
-      console.log('Sensor and City saved:', savedSensor, savedCity);
     } else {
       const cityId = existingCity.id;
-
       // Criar um novo sensor relacionado à cidade existente
       const newSensor = postSensorTable.create({ name, ip, cityId });
       // Salvar o novo sensor 
       const savedSensor = await postSensorTable.save(newSensor);
-
-      console.log('Sensor saved:', savedSensor);
     }
-
     res.send({ message: 'Sensor saved successfully' });
   } catch (err) {
     console.log(err);
@@ -138,16 +133,66 @@ sensorRoute.post('/', async (req, res) => {
 });
 
 
-// Deleta um sensor
-sensorRoute.delete('/:id', async (req, res) => {
-  const sensorId = req.params.id;
-  // Lógica para deletar um sensor por ID
+// Remove um sensor
+sensorRoute.delete('/:id', chechAuthenticated, async (req, res) => {
+  try {
+    const sensorId = req.params.id;
+    // Verificar se o ID do sensor foi fornecido
+    if (!sensorId) {
+      res.status(400).send({ message: 'Bad Request' });
+      return;
+    }
+    // Atualizar o campo "status" do sensor para false
+    const updatedSensor = await postSensorTable.update(sensorId, { status: false });
+    if (updatedSensor.affected === 0) {
+      res.status(404).send({ message: 'Sensor not found' });
+    } else {
+      res.send({ message: 'Sensor status updated successfully' });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
 });
+
 
 // Atualiza um sensor
-sensorRoute.put('/:id', async (req, res) => {
-  const sensorId = req.params.id;
-  // Lógica para atualizar um sensor por ID
+sensorRoute.put('/:id', chechAuthenticated, async (req, res) => {
+  try {
+    const sensorId = req.params.id;
+    const { sensorName, sensorIP, cityId } = req.body;
+
+    // Verificar se o sensor existe
+    const sensor = await postSensorTable.findOne({ where: { id: sensorId } });
+    if (!sensor) {
+      res.status(404).send({ message: 'Sensor not found' });
+      return;
+    }
+
+    // Verificar se a cidade existe
+    const city = await postCityTable.findOne({ where: { id: cityId } });
+    if (!city) {
+      res.status(404).send({ message: 'City not found' });
+      return;
+    }
+
+    // Atualizar os campos do sensor com os novos valores
+    sensor.name = sensorName;
+    sensor.ip = sensorIP;
+    sensor.cityId = cityId;
+
+    console.log(sensor)
+
+    // Salvar as alterações
+    await postSensorTable.save(sensor);
+
+    res.send({ message: 'Sensor updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
 });
 
-module.exports = sensorRoute;
+
+
+module.exports = sensorRoute; 
