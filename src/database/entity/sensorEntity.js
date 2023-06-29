@@ -7,7 +7,8 @@ const SensorSchema = new EntitySchema({
         id: { primary: true, type: 'uuid', generated: 'uuid' },
         ip: { type: 'varchar' },
         name: { type: 'varchar' },
-        cityId: { type: 'uuid' }
+        cityId: { type: 'uuid' },
+        status: { type: 'boolean', default: true },
     },
     relations: {
         sensor_city: {
