@@ -6,6 +6,7 @@ const websiteRoute = require("./frontend/index")
 const logsMiddleware = require('./api/v1/middlewares/logsService');
 const cors = require('cors');
 const path = require('path');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -14,6 +15,8 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { authenticateUser, deserializeUser, serializeUser  } = require('./shared/auth');
+
+app.use(morgan('dev'))
 
 app.use(express.urlencoded({ extended: false }))
 app.set('view engine', 'pug');
