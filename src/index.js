@@ -8,6 +8,9 @@ const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
 
+require('dotenv').config()
+console.log(process.env.PORT) 
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -16,8 +19,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { authenticateUser, deserializeUser, serializeUser  } = require('./shared/auth');
 
-app.use(morgan('dev'))
-
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }))
 app.set('view engine', 'pug');
 app.set('views', [
