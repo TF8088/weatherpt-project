@@ -23,6 +23,6 @@ websiteRoute.get("/dashboard", chechAuthenticated, (req, res) => {
     res.render("dashboard");
 });
 websiteRoute.get("/dashboard/sensor", chechAuthenticated, (req, res) => {
-    res.render("sensor");
+    res.render("dashboard");
 });
 module.exports = websiteRoute;

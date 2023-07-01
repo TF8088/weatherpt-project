@@ -205,7 +205,7 @@ function weatherdata(sensor) {
   });
 }
 
-if (window.location.pathname === '/dashboard/sensor') {
+if (window.location.pathname === '/dashboard') {
   // Função para criar a tabela com os dados dos sensores
   function createSensorTable(data) {
     const tableBody = document.getElementById('sensorTableBody');
@@ -318,7 +318,18 @@ function saveSensor() {
   const ip = document.getElementById('sensorIP').value;
   const cityName = document.getElementById('cityName').value;
   
-  console.log(cityName);
+  // Verificar se todos os campos estão preenchidos
+  if (!name || !ip || !cityName) {
+    // Exibir notificação de erro
+    const errorNotification = document.getElementById('errorNotification');
+    errorNotification.classList.remove('is-hidden');
+   
+    setTimeout(() => {
+      errorNotification.classList.add('is-hidden');
+    }, 5000);
+
+    return;
+  }
 
   // Validar os dados
   const ipPattern = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
@@ -356,7 +367,7 @@ function saveSensor() {
     .then((response) => response.json())
     .then((data) => {
       console.log('Sensor saved:', data);
-      // Lógica adicional após salvar o sensor
+      closeModal();
     })
     .catch((error) => {
       console.log('Error:', error);
