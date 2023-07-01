@@ -5,11 +5,20 @@ const cityRoute = require("./api/v1/controllers/cityController");
 const websiteRoute = require("./frontend/index")
 const logsMiddleware = require('./api/v1/middlewares/logsService');
 const checkWeatherData = require('./backend/index');
+const CronJob = require('cron').CronJob;
 const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
 
 require('dotenv').config()
+
+var job = new CronJob(
+    '10 * * * * *',
+    checkWeatherData,
+    null,
+    true,
+    'Europe/Lisbon'
+);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
