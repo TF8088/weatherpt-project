@@ -1,22 +1,79 @@
 extends default
 
-block content   
-  section.hero.is-large
-    table
-    tr
-      td
-        a(href='#') Link 1
-      td
-        a(href='#') Link 2
-      td
-        a(href='#') Link 3
-    tr
-      td
-        a(href='#') Link 4
-      td
-        a(href='#') Link 5
-      td
-        a(href='#') Link 6
+block content
+  .navbar.controllers
+    .container-controllers
+      .navbar-brand
+        button.button.m-3.is-success(onclick='openModal()') Add Sensor 
 
+  #sensorModal.modal.modal-background
+    .modal-card
+      header.modal-card-head
+        p.modal-card-title Add New Sensor
+        button.delete(onclick='closeModal()')
+      section.modal-card-body
+        form
+          .field
+            label.label Nome do Sensor
+            .control
+              input.input(type='text' placeholder='Sensor Name' id='sensorName')
 
-  script(src='../static/js/script.js')  
+          .field
+            label.label IP do Sensor
+            .control
+              input.input(type='text' placeholder='Sensor IP' id='sensorIP')
+
+          .field
+            label.label Sensor City
+            .control
+              input.input(type='text' placeholder='City' id='cityName')
+
+      footer.modal-card-foot  
+        button.button.is-success(onclick='saveSensor()') Save changes
+        button.button(onclick='closeModal()') Cancel
+        div.notification.is-danger.is-hidden.is-small#errorNotification Erro: Dados inválidos!
+        div.notification.is-success.is-hidden.is-small#successNotification Sensor adicionado com sucesso!
+  #sensorModal-edit.modal.modal-background
+    .modal-card
+      header.modal-card-head
+        p.modal-card-title Edit Sensor
+        button.delete(onclick='closeModal()')
+      section.modal-card-body
+        form
+          .field
+            label.label Id
+            .control
+              input#editsensorId.input(type='text' placeholder='Id Sensor' disabled='')
+          .field
+            label.label Nome do Sensor
+            .control
+              input#editsensorName.input(type='text' placeholder='Sensor Name')
+          .field
+            label.label IP do Sensor
+            .control
+              input#editsensorIP.input(type='text' placeholder='Sensor IP')
+          .field
+            label.label Sensor City
+            .control
+              .select
+                select#editcityName()
+                
+      footer.modal-card-foot 
+        button.button.is-success(onclick='saveEditedSensor()') Save changes
+        button.button(onclick='closeModal()') Cancel
+        div.notification.is-danger.is-hidden.is-small#errorNotification Erro: Dados inválidos!
+        div.notification.is-success.is-hidden.is-small#successNotification Sensor atualizado com sucesso!
+
+  .container-table
+        table
+          thead
+            tr
+              th.is-hidden Id
+              th Name
+              th IP
+              th City
+              th Status
+              th Edit
+          tbody#sensorTableBody
+
+  script(src='../static/js/script.js')
