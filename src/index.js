@@ -4,12 +4,12 @@ const weatherRoute = require("./api/v1/controllers/weatherController");
 const cityRoute = require("./api/v1/controllers/cityController");
 const websiteRoute = require("./frontend/index")
 const logsMiddleware = require('./api/v1/middlewares/logsService');
+const checkWeatherData = require('./backend/index');
 const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
 
 require('dotenv').config()
-console.log(process.env.PORT) 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
