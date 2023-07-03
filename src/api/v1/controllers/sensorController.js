@@ -160,8 +160,8 @@ sensorRoute.delete('/:id', chechAuthenticated, async (req, res) => {
 sensorRoute.put('/:id', chechAuthenticated, async (req, res) => {
   try {
     const sensorId = req.params.id;
-    const { sensorName, sensorIP, cityId } = req.body;
-
+    const { sensorName, sensorIP, cityId, status } = req.body;
+    
     // Verificar se o sensor existe
     const sensor = await postSensorTable.findOne({ where: { id: sensorId } });
     if (!sensor) {
@@ -180,6 +180,7 @@ sensorRoute.put('/:id', chechAuthenticated, async (req, res) => {
     sensor.name = sensorName;
     sensor.ip = sensorIP;
     sensor.cityId = cityId;
+    sensor.status = status;
 
     console.log(sensor)
 

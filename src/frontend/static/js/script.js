@@ -233,19 +233,25 @@ if (window.location.pathname === '/dashboard') {
 
       const statusCell = document.createElement('td');
       if (sensor.status === false) {
-        const disabledButton = document.createElement('button');
-        disabledButton.classList.add('button');
-        disabledButton.classList.add('is-dark');
-        disabledButton.classList.add('disable-button');
-        disabledButton.classList.add('is-responsive');
-        disabledButton.textContent = 'Disabled';
-        disabledButton.disabled = true;
-        statusCell.appendChild(disabledButton);
+        const activateButton = document.createElement('button');
+        activateButton.classList.add('button');
+        activateButton.classList.add('is-success');
+        activateButton.classList.add('active-button');
+        activateButton.classList.add('is-responsive');
+        activateButton.textContent = 'Activate';
+        activateButton.setAttribute('data-sensor-id', sensor.id);
+        activateButton.addEventListener('click', (event) => {
+          const button = event.target;
+          const sensorId = button.getAttribute('data-sensor-id');
+          activateSensor(sensorId);
+        });
+        statusCell.appendChild(activateButton);
+
       } else {
         const disableButton = document.createElement('button');
         disableButton.classList.add('button');
         disableButton.classList.add('is-danger');
-        disableButton.classList.add('disable-button');
+        disableButton.classList.add('active-button');
         disableButton.classList.add('is-responsive');
         disableButton.textContent = 'Disable';
         disableButton.setAttribute('data-sensor-id', sensor.id);
@@ -317,13 +323,13 @@ function saveSensor() {
   const name = document.getElementById('sensorName').value;
   const ip = document.getElementById('sensorIP').value;
   const cityName = document.getElementById('cityName').value;
-  
+
   // Verificar se todos os campos estão preenchidos
   if (!name || !ip || !cityName) {
     // Exibir notificação de erro
     const errorNotification = document.getElementById('errorNotification');
     errorNotification.classList.remove('is-hidden');
-   
+
     setTimeout(() => {
       errorNotification.classList.add('is-hidden');
     }, 5000);
@@ -337,7 +343,7 @@ function saveSensor() {
     // Exibir notificação de erro
     const errorNotification = document.getElementById('errorNotification');
     errorNotification.classList.remove('is-hidden');
-   
+
     setTimeout(() => {
       errorNotification.classList.add('is-hidden');
     }, 5000);
@@ -381,6 +387,24 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+function activateSensor(sensorId) {
+  $.ajax({
+    url: `/api/v1/sensor/${sensorId}`,
+    method: 'PUT',
+    data: {
+      status: true,
+    },
+    success: function (data) {
+      console.log(data);
+    },
+    error: function (error) {
+      console.error('Error:', error);
+    }
+  });
+  fetchSensorDataRepeatedly();
+
+}
+
 // Função para fazer a requisição AJAX
 function fetchSensorData() {
   // Faz a requisição para a rota /api/v1/sensor/
@@ -403,7 +427,7 @@ function editSensor(sensorId) {
   $.ajax({
     url: `/api/v1/sensor/` + sensorId,
     method: 'GET',
-    success: function(data) {
+    success: function (data) {
       console.log(data)
       // Preencher os campos do modal com os dados retornados
       const editsensorId = document.getElementById('editsensorId');
@@ -416,7 +440,7 @@ function editSensor(sensorId) {
       sensorIPInput.value = data.ip;
       cityNameInput.value = data.sensor_city.name;
     },
-    error: function(error) {
+    error: function (error) {
       console.error('Error:', error);
     }
   });
@@ -424,7 +448,7 @@ function editSensor(sensorId) {
   $.ajax({
     url: '/api/v1/city',
     method: 'GET',
-    success: function(cities) {
+    success: function (cities) {
       // Adicionar as opções de cidades no dropdown
       const cityDropdown = document.getElementById('editcityName');
 
@@ -435,7 +459,7 @@ function editSensor(sensorId) {
         cityDropdown.appendChild(option);
       });
     },
-    error: function(error) {
+    error: function (error) {
       console.error('Error:', error);
     }
   });
@@ -446,12 +470,12 @@ function editSensor(sensorId) {
   const modal = document.getElementById('sensorModal-edit');
   modal.classList.add('is-active');
   console.log(sensorId);
-  
+
   // Requisição para obter os dados do sensor
   $.ajax({
     url: `/api/v1/sensor/${sensorId}`,
     method: 'GET',
-    success: function(data) {
+    success: function (data) {
       console.log(data);
       // Preencher os campos do modal com os dados retornados
       const editsensorId = document.getElementById('editsensorId');
@@ -468,7 +492,7 @@ function editSensor(sensorId) {
       $.ajax({
         url: '/api/v1/city',
         method: 'GET',
-        success: function(cities) {
+        success: function (cities) {
           // Adicionar as opções de cidades no dropdown
           const cityDropdown = document.getElementById('editcityName');
           cityDropdown.innerHTML = ''; // Limpar as opções existentes
@@ -485,12 +509,12 @@ function editSensor(sensorId) {
             cityDropdown.appendChild(option);
           });
         },
-        error: function(error) {
+        error: function (error) {
           console.error('Error:', error);
         }
       });
     },
-    error: function(error) {
+    error: function (error) {
       console.error('Error:', error);
     }
   });
@@ -510,10 +534,10 @@ function saveEditedSensor() {
       sensorIP: sensorIP,
       cityId: cityId
     },
-    success: function(data) {
+    success: function (data) {
       console.log(data);
     },
-    error: function(error) {
+    error: function (error) {
       console.error('Error:', error);
     }
   });
