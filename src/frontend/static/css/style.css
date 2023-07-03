@@ -166,9 +166,9 @@ td {
     text-align: left;
 }
 
-.disable-button {
+.active-button {
     margin-bottom: 10px;
-}
+} 
 
 @media (max-width: 600px) {
     .container {
@@ -176,11 +176,6 @@ td {
         padding-top: 0;
     }
 }
-
-/* .hero.is-fullheight {
-  display: flex;
-  align-items: center;
-} */
 
 .columns.is-multiline.is-gapless {
   display: flex;

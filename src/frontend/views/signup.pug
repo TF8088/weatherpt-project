@@ -1,0 +1,24 @@
+extends default
+
+block content
+ section.section.mt-5
+  .container
+    h1.title Registration Form
+    form
+      .field
+        label.label Username
+        .control
+          input.input(type='text' placeholder='Enter your username')
+      .field
+        label.label Email
+        .control
+          input.input(type='email' placeholder='Enter your email')
+      .field
+        label.label Password
+        .control
+          input.input(type='password' placeholder='Enter your password')
+      .field
+        .control
+          button.button.is-link(type='submit') Register
+
+  script(src='../static/js/script.js')

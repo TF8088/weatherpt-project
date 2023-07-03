@@ -24,16 +24,6 @@ nav.navbar.has-navbar-fixed-top.has-shadow
       .navbar-item
         form(action='/logout' method='POST')
           button.button(type='submit') Log Out
-
-.navbar.city-navbar
-  .container
-    .navbar-brand
-      a.is-flex.is-align-items-center(style="margin-left: 15px")
-       i.fas.fa-user
-       | User's
-      a.is-flex.is-align-items-center(href="/dashboard/sensor")
-       i.fas.fa-cloud
-       | Sensor's
 block content
 
 footer.footer
