@@ -13,7 +13,7 @@ const morgan = require('morgan');
 require('dotenv').config()
 
 var job = new CronJob(
-    '10 * * * * *',
+    '0 */10 * * * *',
     checkWeatherData,
     null,
     true,
@@ -71,6 +71,7 @@ app.post('/logout', function(req, res, next){
       res.redirect('/');
     });
 });
+
 
 app.listen(PORT, () => {
     console.log(`Weatherpt Project is running on: http://localhost:` + PORT);
