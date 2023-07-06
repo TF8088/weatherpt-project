@@ -1,0 +1,312 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "WeatherPT API",
+        "version": "1.0.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/weather/{id}": {
+            "get": {
+                "summary": "Obtém informações do sensor por ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do sensor",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do sensor",
+                        "schema": {
+                            "$ref": "#/definitions/SensorDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            }
+        },
+        "/sensors": {
+            "get": {
+                "summary": "Obtém todos os sensores",
+                "responses": {
+                    "200": {
+                        "description": "Lista de sensores",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SensorResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Adiciona um sensor",
+                "parameters": [
+                    {
+                        "name": "sensor",
+                        "in": "body",
+                        "description": "Dados do sensor",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SensorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sensor adicionado com sucesso"
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            }
+        },
+        "/sensors/{id}": {
+            "get": {
+                "summary": "Obtém informações de um sensor por ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do sensor",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Informações do sensor",
+                        "schema": {
+                            "$ref": "#/definitions/SensorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza um sensor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do sensor",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sensor",
+                        "in": "body",
+                        "description": "Dados do sensor",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SensorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sensor atualizado com sucesso"
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Remove um sensor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do sensor",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sensor removido com sucesso"
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            }
+        },
+        "/sensors/search/{city}": {
+            "get": {
+                "summary": "Busca sensores por cidade",
+                "parameters": [
+                    {
+                        "name": "city",
+                        "in": "path",
+                        "description": "Nome da cidade",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de sensores encontrados",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SensorResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            }
+        },
+        "/cities": {
+            "get": {
+                "summary": "Obtém todas as cidades",
+                "responses": {
+                    "200": {
+                        "description": "Lista de cidades",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CityResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    }
+                }
+            }
+        },
+        "/data/temperature": {
+            "get": {
+                "summary": "Atualiza os dados de temperatura de um sensor",
+                "parameters": [
+                    {
+                        "name": "tC",
+                        "in": "query",
+                        "description": "Temperatura em Celsius",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "tF",
+                        "in": "query",
+                        "description": "Temperatura em Fahrenheit",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados de temperatura atualizados com sucesso"
+                    }
+                }
+            }
+        },
+        "/data/humidity": {
+            "get": {
+                "summary": "Atualiza os dados de umidade de um sensor",
+                "parameters": [
+                    {
+                        "name": "rH",
+                        "in": "query",
+                        "description": "Umidade relativa",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados de umidade atualizados com sucesso"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "SensorDataResponse": {
+            "type": "object",
+            "properties": {
+                "sensorData": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "tempc": {
+                                "type": "number"
+                            },
+                            "tempf": {
+                                "type": "number"
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "SensorResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "cityName": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "SensorRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "cityName": {
+                    "type": "string"
+                }
+            }
+        },
+        "CityResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

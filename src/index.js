@@ -6,6 +6,7 @@ const dataRoute = require("./api/v1/controllers/dataController");
 const websiteRoute = require("./frontend/index")
 const logsMiddleware = require('./api/v1/middlewares/logsService');
 const checkWeatherData = require('./backend/index');
+const swaggerUi = require('swagger-ui-express');
 const CronJob = require('cron').CronJob;
 const cors = require('cors');
 const path = require('path');
@@ -28,6 +29,7 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { authenticateUser, deserializeUser, serializeUser  } = require('./shared/auth');
+const swaggerDocument = require('./api/v1/docs/swagger.json');
 
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }))
@@ -60,6 +62,7 @@ app.use('/api/v1/sensor', sensorRoute);
 app.use('/api/v1/weather', weatherRoute);
 app.use('/api/v1/city', cityRoute);
 app.use('/api/v1/data', dataRoute);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/', websiteRoute);
 
 app.post("/login", passport.authenticate('local', {
