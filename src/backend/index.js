@@ -13,8 +13,11 @@ const bot = new TeleBot({
     token: process.env.BOT_TOKEN,
     usePlugins: ['commandButton']
 });
-
-bot.start();
+try {
+    bot.start();
+} catch (err) {
+    console.log("Err: " + err);
+}
 
 async function checkWeatherData() {
     try {
@@ -44,7 +47,6 @@ async function checkWeatherData() {
                         sensorIP: ip,
                         lastInsertTime: lastRecordTime
                     };
-
                     bot.sendMessage(process.env.GROUP_ID, `Sensor Name: ${messageToSend.sensorName}
                     \nSensor IP: ${messageToSend.sensorIP}\nLast Insert: ${messageToSend.lastInsertTime}`);
                 });
