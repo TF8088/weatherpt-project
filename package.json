@@ -19,6 +19,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.11.0",
     "pug": "^3.0.2",
+    "swagger-ui-express": "^4.6.3",
     "telebot": "^1.4.1",
     "typeorm": "^0.3.16"
   },
