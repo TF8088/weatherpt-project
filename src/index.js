@@ -2,6 +2,7 @@ const express = require("express");
 const sensorRoute = require("./api/v1/controllers/sensorController");
 const weatherRoute = require("./api/v1/controllers/weatherController");
 const cityRoute = require("./api/v1/controllers/cityController");
+const dataRoute = require("./api/v1/controllers/dataController");
 const websiteRoute = require("./frontend/index")
 const logsMiddleware = require('./api/v1/middlewares/logsService');
 const checkWeatherData = require('./backend/index');
@@ -39,7 +40,7 @@ app.set('views', [
 app.use('/static', express.static(path.join(__dirname, './frontend/static')))
 app.use(logsMiddleware);
 app.use(cors({
-    origin: ['192.168.1.155', '192.168.0.110']
+    origin: ['192.168.0.109']
 }));
 app.use(express.json());
 app.use(session({
@@ -58,6 +59,7 @@ passport.deserializeUser(deserializeUser);
 app.use('/api/v1/sensor', sensorRoute);
 app.use('/api/v1/weather', weatherRoute);
 app.use('/api/v1/city', cityRoute);
+app.use('/api/v1/data', dataRoute);
 app.use('/', websiteRoute);
 
 app.post("/login", passport.authenticate('local', {
