@@ -118,10 +118,14 @@ function weatherdata(sensor) {
         plugins: {
           legend: {
             display: false // Oculta a legenda
+          },
+          tooltip: {
+            enabled: true // Habilita os tooltips
           }
         },
         tension: 0.4 // Controla a suavidade das linhas do gráfico
       };
+
       const tempcChartData = {
         labels: lastFiveDateData,
         datasets: [{
@@ -525,6 +529,19 @@ function saveEditedSensor() {
   const sensorName = document.getElementById('editsensorName').value;
   const sensorIP = document.getElementById('editsensorIP').value;
   const cityId = document.getElementById('editcityName').value;
+
+  const ipPattern = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+  if (!ipPattern.test(sensorIP)) {
+    // Exibir notificação de erro
+    const errorNotification = document.getElementById('errorNotification2');
+    errorNotification.classList.remove('is-hidden');
+
+    setTimeout(() => {
+      errorNotification.classList.add('is-hidden');
+    }, 5000);
+
+    return;
+  }
 
   $.ajax({
     url: `/api/v1/sensor/${sensorId}`,
